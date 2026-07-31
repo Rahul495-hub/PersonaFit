@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Fashion Identity Classifier
 
 A Flask web application that classifies users into a shopping-style
@@ -168,3 +169,7 @@ reflect an actual production model.
 - Grow `data/fashion_data.csv` with more/real survey responses and rerun
   `train_model.py` for a stronger classifier — the bundled dataset is still
   synthetic and modest in size.
+=======
+# PersonaFit
+End-to-end Fashion Identity Classifier using Machine Learning, Flask, and RAG-powered personalized recommendations.
+>>>>>>> 743296d6ff27429ad53fe53887dcce1bb8de7966
