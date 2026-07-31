@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics Dashboard — Fashion Identity Classifier</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink: #16203a;
+            --ink-soft: #4c5876;
+            --paper: #f4f6fb;
+            --panel: #ffffff;
+            --line: #e3e7f1;
+            --trend: #6c5ce7;
+            --budget: #159a80;
+            --luxury: #c9932f;
+            --sustain: #4c8a5e;
+            --convenience: #5b7fbf;
+            --accent: #0f9d78;
+            --warn: #c9932f;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            background: var(--paper);
+            color: var(--ink);
+            font-family: 'Inter', sans-serif;
+        }
+        .mono { font-family: 'IBM Plex Mono', monospace; }
+        header.topbar {
+            background: var(--ink);
+            color: #fff;
+            padding: 22px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        header.topbar h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.35rem;
+            margin: 0;
+            letter-spacing: -0.01em;
+        }
+        header.topbar .eyebrow {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #9fb0d8;
+            display: block;
+            margin-bottom: 4px;
+        }
+        header.topbar nav a {
+            color: #cfd8ef;
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-left: 18px;
+        }
+        header.topbar nav a:hover { color: #fff; }
+
+        main { max-width: 1180px; margin: 0 auto; padding: 32px 24px 80px; }
+
+        .kpi-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+        .kpi-card {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-left: 4px solid var(--accent);
+            border-radius: 10px;
+            padding: 18px 20px;
+        }
+        .kpi-card .kpi-label {
+            font-size: 0.78rem;
+            color: var(--ink-soft);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 6px;
+        }
+        .kpi-card .kpi-value {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.9rem;
+            font-weight: 700;
+        }
+        .kpi-card .kpi-sub { font-size: 0.8rem; color: var(--ink-soft); margin-top: 4px; }
+
+        .panel-grid {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+        @media (max-width: 860px) { .panel-grid { grid-template-columns: 1fr; } }
+
+        .panel {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 22px;
+        }
+        .panel h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.05rem;
+            margin: 0 0 4px;
+        }
+        .panel .panel-note { font-size: 0.82rem; color: var(--ink-soft); margin: 0 0 16px; }
+        .chart-box { position: relative; height: 260px; }
+
+        table.data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.88rem;
+        }
+        table.data-table th, table.data-table td {
+            padding: 8px 10px;
+            border-bottom: 1px solid var(--line);
+            text-align: left;
+        }
+        table.data-table th {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--ink-soft);
+        }
+        table.data-table td.num, table.data-table th.num { text-align: right; font-family: 'IBM Plex Mono', monospace; }
+
+        .confusion-cell {
+            text-align: center;
+            font-family: 'IBM Plex Mono', monospace;
+            font-weight: 600;
+            border-radius: 4px;
+        }
+
+        .badge {
+            display: inline-block;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.72rem;
+            padding: 2px 8px;
+            border-radius: 100px;
+            background: rgba(15, 157, 120, 0.12);
+            color: var(--accent);
+        }
+        .badge.no { background: rgba(201, 147, 47, 0.15); color: var(--warn); }
+
+        ol.insights {
+            list-style: none;
+            counter-reset: insight;
+            padding: 0;
+            margin: 0;
+        }
+        ol.insights li {
+            counter-increment: insight;
+            display: flex;
+            gap: 14px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--line);
+            font-size: 0.92rem;
+        }
+        ol.insights li:last-child { border-bottom: none; }
+        ol.insights li::before {
+            content: counter(insight, decimal-leading-zero);
+            font-family: 'IBM Plex Mono', monospace;
+            color: var(--accent);
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .empty-state {
+            border: 1px dashed var(--line);
+            border-radius: 10px;
+            padding: 24px;
+            text-align: center;
+            color: var(--ink-soft);
+            font-size: 0.9rem;
+        }
+
+        footer.page-footer {
+            text-align: center;
+            padding: 28px;
+            color: var(--ink-soft);
+            font-size: 0.82rem;
+        }
+        footer.page-footer a { color: var(--accent); text-decoration: none; }
+    </style>
+</head>
+<body>
+    <header class="topbar">
+        <div>
+            <span class="eyebrow">Fashion Identity Classifier</span>
+            <h1>Analytics Dashboard</h1>
+        </div>
+        <nav>
+            <a href="{{ url_for('index') }}">Take the quiz</a>
+            <a href="https://github.com" onclick="return false;" style="opacity:.5; cursor:default;">Docs</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="kpi-row">
+            <div class="kpi-card">
+                <div class="kpi-label">Training rows</div>
+                <div class="kpi-value mono">{{ training_data_info.total_rows if training_data_info.available else '—' }}</div>
+                <div class="kpi-sub">{{ 'SMOTE-augmented' if training_data_info.get('is_augmented') else 'raw survey data' }}{{ ' · ' + training_data_info.source_file if training_data_info.available else '' }}</div>
+            </div>
+            <div class="kpi-card" style="border-left-color: var(--trend);">
+                <div class="kpi-label">Model accuracy</div>
+                <div class="kpi-value mono">{{ '%.1f%%' % (model_metrics.accuracy * 100) if model_metrics else '—' }}</div>
+                <div class="kpi-sub">{{ 'on ' + model_metrics.n_eval_samples|string + ' held-out rows' if model_metrics else 'run train_model.py' }}</div>
+            </div>
+            <div class="kpi-card" style="border-left-color: var(--luxury);">
+                <div class="kpi-label">Live quiz completions</div>
+                <div class="kpi-value mono">{{ usage_stats.total_submissions if usage_stats.available else 0 }}</div>
+                <div class="kpi-sub">{{ 'last: ' + usage_stats.last_submission[:19].replace('T',' ') + ' UTC' if usage_stats.available else 'no visitors yet' }}</div>
+            </div>
+            <div class="kpi-card" style="border-left-color: var(--budget);">
+                <div class="kpi-label">Most predictive question</div>
+                <div class="kpi-value mono" style="font-size:1.05rem; line-height:1.3;">
+                    {{ eda_summary.most_predictive_feature.split('.',1)[-1] if eda_summary else (feature_importance.labels[0] if feature_importance else '—') }}
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-grid">
+            <div class="panel">
+                <h2>Training data composition</h2>
+                <p class="panel-note">Segment distribution across the dataset the model was trained on.</p>
+                {% if training_data_info.available %}
+                <div class="chart-box"><canvas id="trainingDistChart"></canvas></div>
+                {% else %}
+                <div class="empty-state">No training dataset found.</div>
+                {% endif %}
+            </div>
+            <div class="panel">
+                <h2>Feature importance</h2>
+                <p class="panel-note">Which quiz questions the model relies on most.</p>
+                {% if feature_importance %}
+                <div class="chart-box"><canvas id="importanceChart"></canvas></div>
+                {% else %}
+                <div class="empty-state">No trained model available yet.</div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="panel-grid">
+            <div class="panel">
+                <h2>Model performance by segment</h2>
+                <p class="panel-note">Precision / recall / F1 on held-out evaluation data.</p>
+                {% if model_metrics %}
+                <table class="data-table">
+                    <thead>
+                        <tr><th>Segment</th><th class="num">Precision</th><th class="num">Recall</th><th class="num">F1</th><th class="num">Support</th></tr>
+                    </thead>
+                    <tbody>
+                        {% for label in model_metrics.labels %}
+                        {% set stats = model_metrics.classification_report[label] %}
+                        <tr>
+                            <td>{{ label }}</td>
+                            <td class="num">{{ '%.2f' % stats.precision }}</td>
+                            <td class="num">{{ '%.2f' % stats.recall }}</td>
+                            <td class="num">{{ '%.2f' % stats['f1-score'] }}</td>
+                            <td class="num">{{ stats.support|int }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <div class="empty-state">No model metrics found. Run <span class="mono">python train_model.py</span>.</div>
+                {% endif %}
+            </div>
+            <div class="panel">
+                <h2>Confusion matrix</h2>
+                <p class="panel-note">Rows = actual segment, columns = predicted.</p>
+                {% if model_metrics %}
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            {% for label in model_metrics.labels %}<th class="num">{{ label[:10] }}</th>{% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for label, row in zip_lists(model_metrics.labels, model_metrics.confusion_matrix) %}
+                        <tr>
+                            <td>{{ label }}</td>
+                            {% for val in row %}
+                            {% set max_val = model_metrics.confusion_matrix|map('max')|max %}
+                            {% set intensity = (val / max_val) if max_val > 0 else 0 %}
+                            <td class="confusion-cell" style="background: rgba(15,157,120,{{ '%.2f' % (intensity * 0.55) }});">{{ val }}</td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <div class="empty-state">No model metrics found.</div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="panel-grid">
+            <div class="panel">
+                <h2>Live usage</h2>
+                <p class="panel-note">Segment breakdown of actual quiz-takers on this deployment.</p>
+                {% if usage_stats.available %}
+                <div class="chart-box"><canvas id="usageChart"></canvas></div>
+                {% else %}
+                <div class="empty-state">No one has completed the quiz on this deployment yet — this panel fills in as real visitors get classified.</div>
+                {% endif %}
+            </div>
+            <div class="panel">
+                <h2>Question significance (χ² test)</h2>
+                <p class="panel-note">Which quiz questions are statistically associated with the assigned segment.</p>
+                {% if eda_summary %}
+                <table class="data-table">
+                    <thead><tr><th>Question</th><th class="num">p-value</th><th>Significant</th></tr></thead>
+                    <tbody>
+                        {% for r in eda_summary.chi_square_tests %}
+                        <tr>
+                            <td>{{ r.feature.split('.',1)[-1] }}</td>
+                            <td class="num">{{ '%.4g' % r.p_value }}</td>
+                            <td><span class="badge {{ '' if r['significant_at_0.05'] else 'no' }}">{{ 'Yes' if r['significant_at_0.05'] else 'No' }}</span></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <div class="empty-state">No EDA report found. Run <span class="mono">python eda.py</span> to generate one.</div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="panel">
+            <h2>Key takeaways</h2>
+            <ol class="insights">
+                {% if eda_summary %}
+                <li>Class balance ratio in the training data is <strong class="mono">{{ eda_summary.class_balance_ratio }}</strong> (1.0 = perfectly balanced across segments).</li>
+                <li><strong>{{ eda_summary.most_predictive_feature.split('.',1)[-1] }}</strong> is the single most predictive quiz question; <strong>{{ eda_summary.least_predictive_feature.split('.',1)[-1] }}</strong> carries the least signal and is a candidate to simplify or drop.</li>
+                {% endif %}
+                {% if model_metrics %}
+                <li>The current model reaches <strong class="mono">{{ '%.1f%%' % (model_metrics.accuracy * 100) }}</strong> accuracy on held-out data across {{ model_metrics.labels|length }} segments.</li>
+                {% endif %}
+                {% if training_data_info.available and not training_data_info.is_augmented %}
+                <li>Training on the raw ({{ training_data_info.total_rows }}-row) dataset. Run <span class="mono">python data_augmentation.py</span> then <span class="mono">python train_model.py</span> to train on a larger, SMOTE-balanced set instead.</li>
+                {% endif %}
+                {% if usage_stats.available %}
+                <li>{{ usage_stats.total_submissions }} real visitor{{ 's' if usage_stats.total_submissions != 1 else '' }} classified so far — compare the "Live usage" segment mix above against the training distribution to spot drift between who the model was built for and who's actually using it.</li>
+                {% else %}
+                <li>No live traffic yet — once people take the quiz, this panel will compare real user segments against the training distribution to flag any drift.</li>
+                {% endif %}
+                <li>This dataset is currently synthetic (rule-generated with light noise), so these metrics will look cleaner than a real production model. Swap in real survey responses via <span class="mono">data/fashion_data.csv</span> and re-run <span class="mono">data_augmentation.py</span> + <span class="mono">train_model.py</span> + <span class="mono">eda.py</span>.</li>
+            </ol>
+        </div>
+    </main>
+
+    <footer class="page-footer">
+        Built on scikit-learn, pandas &amp; Flask · <a href="{{ url_for('index') }}">Back to the quiz</a>
+    </footer>
+
+    <script>
+        const SEGMENT_COLORS = {
+            'Trendsetter': '#6c5ce7',
+            'Budget Conscious': '#159a80',
+            'Luxury': '#c9932f',
+            'Sustainable Conscious': '#4c8a5e',
+            'Convenience Seeker': '#5b7fbf'
+        };
+        function colorsFor(labels) {
+            return labels.map(l => SEGMENT_COLORS[l] || '#94a3c4');
+        }
+
+        {% if training_data_info.available %}
+        new Chart(document.getElementById('trainingDistChart'), {
+            type: 'doughnut',
+            data: {
+                labels: {{ training_data_info.labels|tojson }},
+                datasets: [{ data: {{ training_data_info.counts|tojson }}, backgroundColor: colorsFor({{ training_data_info.labels|tojson }}) }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { font: { family: 'Inter' } } } } }
+        });
+        {% endif %}
+
+        {% if feature_importance %}
+        new Chart(document.getElementById('importanceChart'), {
+            type: 'bar',
+            data: {
+                labels: {{ feature_importance.labels|tojson }},
+                datasets: [{ data: {{ feature_importance.scores|tojson }}, backgroundColor: '#0f9d78' }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: { x: { beginAtZero: true } }
+            }
+        });
+        {% endif %}
+
+        {% if usage_stats.available %}
+        new Chart(document.getElementById('usageChart'), {
+            type: 'bar',
+            data: {
+                labels: {{ usage_stats.labels|tojson }},
+                datasets: [{ data: {{ usage_stats.counts|tojson }}, backgroundColor: colorsFor({{ usage_stats.labels|tojson }}) }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+        });
+        {% endif %}
+    </script>
+</body>
+</html>

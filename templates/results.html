@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Shopping Style Result</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1490481651871-ab68de25d43d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            padding: 20px 0;
+        }
+        .results-container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
+        }
+        .segment-card {
+            background: linear-gradient(145deg, #ffffff, #f8f9fa);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .segment-card:hover {
+            transform: translateY(-5px);
+        }
+        .chart-container {
+            position: relative;
+            height: 350px;
+            margin: 40px 0;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        h3 {
+            color: #34495e;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        h4 {
+            color: #2c3e50;
+            font-weight: 500;
+            margin-top: 20px;
+        }
+        .lead {
+            color: #34495e;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #6c5ce7 0%, #a363d9 100%);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(108, 92, 231, 0.3);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(108, 92, 231, 0.4);
+        }
+        p {
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+        .mt-3 {
+            margin-top: 1.5rem !important;
+        }
+        .text-center {
+            text-align: center !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="results-container">
+            <h1 class="text-center mb-4">Your Shopping Style Profile</h1>
+            
+            <div class="segment-card">
+                <h3>Primary Segment: {{ primary_info.name if primary_info else primary_segment }}</h3>
+                <p class="lead">{{ primary_info.description if primary_info else '' }}</p>
+                <div class="mt-3">
+                    <h4>Recommendations</h4>
+                    <p>{{ primary_info.recommendations if primary_info else '' }}</p>
+                    <h4>Typical Shopping Habits</h4>
+                    <p>{{ primary_info.shopping_habits if primary_info else '' }}</p>
+                </div>
+            </div>
+
+            <div class="segment-card">
+                <h3>Secondary Segment: {{ secondary_info.name if secondary_info else secondary_segment }}</h3>
+                <p class="lead">{{ secondary_info.description if secondary_info else '' }}</p>
+            </div>
+
+            {% if recommendation and recommendation.summary %}
+            <div class="segment-card">
+                <h3>Personalized Insights</h3>
+                <p class="lead">{{ recommendation.summary }}</p>
+                {% if recommendation.sources %}
+                <details class="mt-3">
+                    <summary style="cursor: pointer; color: #6c5ce7; font-weight: 600;">
+                        Based on {{ recommendation.sources|length }} reference note{{ 's' if recommendation.sources|length != 1 else '' }}
+                    </summary>
+                    <ul class="mt-2">
+                        {% for source in recommendation.sources %}
+                        <li><small>{{ source.text }}</small></li>
+                        {% endfor %}
+                    </ul>
+                </details>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            <div class="chart-container">
+                <canvas id="radarChart"></canvas>
+            </div>
+            
+            <div class="text-center mt-4">
+                <a href="{{ url_for('index') }}" class="btn btn-primary">Take Quiz Again</a>
+                <a href="{{ url_for('dashboard') }}" class="btn btn-outline-secondary ms-2">View Analytics Dashboard</a>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const ctx = document.getElementById('radarChart').getContext('2d');
+        const chartData = {
+            labels: {{ radar_data.labels | tojson }},
+            datasets: [{
+                label: 'Your Shopping Style Profile',
+                data: {{ radar_data.scores | tojson }},
+                fill: true,
+                backgroundColor: 'rgba(108, 92, 231, 0.2)',
+                borderColor: 'rgb(108, 92, 231)',
+                pointBackgroundColor: 'rgb(108, 92, 231)',
+                pointBorderColor: '#fff',
+                pointHoverBackgroundColor: '#fff',
+                pointHoverBorderColor: 'rgb(108, 92, 231)'
+            }]
+        };
+        
+        new Chart(ctx, {
+            type: 'radar',
+            data: chartData,
+            options: {
+                elements: {
+                    line: {
+                        borderWidth: 2
+                    }
+                },
+                scales: {
+                    r: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html> 

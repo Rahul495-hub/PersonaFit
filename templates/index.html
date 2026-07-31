@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fashion Shopping Segment Quiz</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        body {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1445205170230-053b83016050?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 20px 0;
+            color: white;
+        }
+        .quiz-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .quiz-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #6c5ce7, #a363d9, #6c5ce7);
+            background-size: 200% 100%;
+            animation: gradient 3s linear infinite;
+        }
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        h1 {
+            color: #2c3e50;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            font-size: 2.5rem;
+        }
+        .lead {
+            color: #34495e;
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 40px;
+        }
+        .start-button {
+            background: linear-gradient(135deg, #6c5ce7 0%, #a363d9 100%);
+            color: white;
+            padding: 15px 40px;
+            border-radius: 30px;
+            border: none;
+            font-size: 1.2em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(108, 92, 231, 0.3);
+            text-decoration: none;
+            display: inline-block;
+        }
+        .start-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(108, 92, 231, 0.4);
+            color: white;
+        }
+        .fashion-icons {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 40px 0;
+        }
+        .fashion-icon {
+            font-size: 2.5rem;
+            color: #6c5ce7;
+            transition: transform 0.3s ease;
+        }
+        .fashion-icon:hover {
+            transform: scale(1.1);
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+        .feature-card {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        .feature-card h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .feature-card p {
+            color: #34495e;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="quiz-container animate__animated animate__fadeIn">
+            <h1>Discover Your Fashion Shopping Style</h1>
+            <p class="lead">Take this quick quiz to find out if you're a Trendsetter, Budget Conscious Shopper, or Luxury Enthusiast!</p>
+            
+            <div class="fashion-icons">
+                <span class="fashion-icon">👕</span>
+                <span class="fashion-icon">🛍️</span>
+                <span class="fashion-icon">💎</span>
+            </div>
+
+            <div class="features">
+                <div class="feature-card">
+                    <h4>Quick & Easy</h4>
+                    <p>Complete the quiz in just a few minutes</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Accurate Results</h4>
+                    <p>Get detailed insights about your shopping style</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Personalized Tips</h4>
+                    <p>Receive customized shopping recommendations</p>
+                </div>
+            </div>
+
+            <a href="{{ url_for('quiz') }}" class="btn start-button animate__animated animate__pulse animate__infinite">Start Quiz</a>
+            <div class="mt-3">
+                <a href="{{ url_for('dashboard') }}" style="color: #6c5ce7; font-size: 0.9rem;">View analytics dashboard →</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

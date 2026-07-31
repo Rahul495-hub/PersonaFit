@@ -1,0 +1,48 @@
+{
+  "n_rows": 300,
+  "class_counts": {
+    "Luxury": 100,
+    "Trendsetter": 100,
+    "Budget Conscious": 100
+  },
+  "class_balance_ratio": 1.0,
+  "chi_square_tests": [
+    {
+      "feature": "3.What influences your clothing purchases the most?",
+      "chi2": 600.0,
+      "p_value": 1.5496082669461261e-128,
+      "degrees_of_freedom": 4,
+      "significant_at_0.05": true
+    },
+    {
+      "feature": "5.If you had to choose, would you prefer timeless pieces or trendy items?",
+      "chi2": 517.241,
+      "p_value": 1.249685917868239e-110,
+      "degrees_of_freedom": 4,
+      "significant_at_0.05": true
+    },
+    {
+      "feature": "2.Where do you typically shop for clothes?",
+      "chi2": 476.19,
+      "p_value": 9.443279726435042e-102,
+      "degrees_of_freedom": 4,
+      "significant_at_0.05": true
+    },
+    {
+      "feature": "1.How often do you shop for new clothes?",
+      "chi2": 411.641,
+      "p_value": 8.48888609188055e-88,
+      "degrees_of_freedom": 4,
+      "significant_at_0.05": true
+    },
+    {
+      "feature": "4.How would you describe your go-to daily outfit?",
+      "chi2": 408.164,
+      "p_value": 4.789204909239143e-87,
+      "degrees_of_freedom": 4,
+      "significant_at_0.05": true
+    }
+  ],
+  "most_predictive_feature": "3.What influences your clothing purchases the most?",
+  "least_predictive_feature": "4.How would you describe your go-to daily outfit?"
+}

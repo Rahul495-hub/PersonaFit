@@ -1,0 +1,116 @@
+[
+  {
+    "id": "trendsetter_style",
+    "segment": "Trendsetter",
+    "topic": "style",
+    "text": "Trendsetters build outfits around one bold statement piece per look, then keep everything else simple so the standout item does the talking. Rotating a few high-impact pieces each season keeps a wardrobe feeling current without needing constant full-closet turnover."
+  },
+  {
+    "id": "trendsetter_shopping",
+    "segment": "Trendsetter",
+    "topic": "shopping_strategy",
+    "text": "A useful strategy for staying ahead of trends without overspending is to buy one or two 'hero' pieces per season from runway-adjacent lines, then fill the rest of the wardrobe with affordable basics from fast-fashion or high-street retailers that can be mixed in."
+  },
+  {
+    "id": "trendsetter_pitfall",
+    "segment": "Trendsetter",
+    "topic": "pitfall",
+    "text": "The most common pitfall for trend-driven shoppers is closet churn: buying quickly, wearing an item only a handful of times, then discarding it once the trend fades. Setting a simple rule, such as reselling or donating one old trend piece for every new one purchased, keeps the wardrobe from growing unmanageable."
+  },
+  {
+    "id": "budget_conscious_style",
+    "segment": "Budget Conscious",
+    "topic": "style",
+    "text": "Budget-focused dressing works best around a small set of versatile, neutral-colored basics that combine into many different outfits. A capsule wardrobe of around 20-30 interchangeable pieces can produce dozens of outfit combinations without repeat spending."
+  },
+  {
+    "id": "budget_conscious_shopping",
+    "segment": "Budget Conscious",
+    "topic": "shopping_strategy",
+    "text": "Cost-per-wear is a more useful way to judge value than sticker price alone: dividing an item's price by how many times it will realistically be worn often shows that a slightly pricier, durable basic is cheaper in the long run than a low-cost item that wears out quickly. Shopping end-of-season sales and outlet events is an efficient way to acquire quality pieces at a lower cost."
+  },
+  {
+    "id": "budget_conscious_pitfall",
+    "segment": "Budget Conscious",
+    "topic": "pitfall",
+    "text": "A common trap for value-driven shoppers is buying items purely because they are discounted, rather than because they are actually needed or wearable with existing pieces. Keeping a short shopping list before browsing sales helps avoid impulse purchases that end up unworn."
+  },
+  {
+    "id": "luxury_style",
+    "segment": "Luxury",
+    "topic": "style",
+    "text": "Luxury-oriented dressing tends to favor a small number of investment pieces made from premium materials, chosen for construction quality and longevity rather than seasonal trends. Classic silhouettes from established houses typically hold both style and resale value longer than trend-driven luxury pieces."
+  },
+  {
+    "id": "luxury_shopping",
+    "segment": "Luxury",
+    "topic": "shopping_strategy",
+    "text": "Building a luxury wardrobe efficiently usually means prioritizing versatile foundational pieces, such as a well-made coat, tailored blazer, or leather bag, before moving on to more statement-driven designer items. Researching a brand's craftsmanship and materials before buying helps ensure the investment holds up over years of wear."
+  },
+  {
+    "id": "luxury_pitfall",
+    "segment": "Luxury",
+    "topic": "pitfall",
+    "text": "A common misstep among luxury shoppers is prioritizing logo visibility or hype over fit and craftsmanship, which can date a piece quickly. Prioritizing tailoring and fabric quality over branding tends to produce a wardrobe that ages better and remains wearable for longer."
+  },
+  {
+    "id": "sustainable_style",
+    "segment": "Sustainable Conscious",
+    "topic": "style",
+    "text": "Sustainable dressing generally favors durable, timeless designs made from natural or recycled fibers, since these tend to have both a lower environmental footprint and a longer usable life than fast-fashion synthetics."
+  },
+  {
+    "id": "sustainable_shopping",
+    "segment": "Sustainable Conscious",
+    "topic": "shopping_strategy",
+    "text": "Checking a brand's supply-chain transparency, looking for third-party certifications, and favoring secondhand or vintage marketplaces are practical ways to shop more sustainably. Renting occasion-wear instead of buying single-use outfits also reduces overall consumption."
+  },
+  {
+    "id": "sustainable_pitfall",
+    "segment": "Sustainable Conscious",
+    "topic": "pitfall",
+    "text": "Not every product labeled 'eco-friendly' or 'green' meets a meaningful sustainability standard; this is often referred to as greenwashing. Looking for specific, verifiable certifications rather than vague marketing language is a more reliable way to evaluate a brand's actual practices."
+  },
+  {
+    "id": "convenience_style",
+    "segment": "Convenience Seeker",
+    "topic": "style",
+    "text": "For shoppers who prioritize efficiency, a small rotating capsule of coordinated separates in a limited color palette minimizes daily decision-making while still looking put-together."
+  },
+  {
+    "id": "convenience_shopping",
+    "segment": "Convenience Seeker",
+    "topic": "shopping_strategy",
+    "text": "Subscription styling boxes, curated personal-shopper services, and retailers with generous return policies reduce the time spent browsing and trying on items, which suits shoppers who prefer a streamlined process over extensive research."
+  },
+  {
+    "id": "convenience_pitfall",
+    "segment": "Convenience Seeker",
+    "topic": "pitfall",
+    "text": "Relying entirely on convenience-driven purchases can lead to a wardrobe that lacks personal style or cohesion. Setting a few personal style guidelines in advance, such as preferred colors or silhouettes, helps convenience-oriented shopping still produce a wardrobe that feels intentional."
+  },
+  {
+    "id": "general_capsule",
+    "segment": "General",
+    "topic": "wardrobe_planning",
+    "text": "A capsule wardrobe is a curated set of versatile items, usually built around a limited color palette, designed so that most pieces can be combined with several others. This approach works well across most shopping styles and reduces both closet clutter and decision fatigue."
+  },
+  {
+    "id": "general_seasonal",
+    "segment": "General",
+    "topic": "seasonal_refresh",
+    "text": "A useful habit before each new season is a short wardrobe audit: setting aside items that were not worn at all in the previous season for resale, donation, or repair, and identifying genuine gaps before making new purchases."
+  },
+  {
+    "id": "general_fit",
+    "segment": "General",
+    "topic": "fit",
+    "text": "Fit has a bigger visual impact than price point in most cases. A well-tailored inexpensive piece will generally look more polished than an expensive item that fits poorly, so budgeting for basic alterations is often a worthwhile investment regardless of shopping style."
+  },
+  {
+    "id": "general_color",
+    "segment": "General",
+    "topic": "color_palette",
+    "text": "Building outfits around two or three core neutral colors, plus one or two accent colors, makes it far easier for separates purchased at different times to work together, reducing the risk of a closet full of items that do not combine well."
+  }
+]
