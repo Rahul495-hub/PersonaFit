@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # Fashion Identity Classifier
 
 A Flask web application that classifies users into a shopping-style
